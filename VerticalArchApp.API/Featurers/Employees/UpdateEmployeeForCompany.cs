@@ -13,7 +13,7 @@ namespace VerticalArchApp.API.Featurers.Employees
 {
     public class UpdateEmployeeForCompany
     {
-        public class UpdateCommand : IRequest<IEnumerable<UpdateResult>>
+        public class UpdateCommand : IRequest<Unit>
         {
             public int Id { get; set; }
             public string Name { get; set; }
@@ -47,7 +47,7 @@ namespace VerticalArchApp.API.Featurers.Employees
                 RuleFor(x => x.CompanyId).NotNull();
             }
         }
-        public class Handler : IRequestHandler<UpdateCommand, IEnumerable<UpdateResult>>
+        public class Handler : IRequestHandler<UpdateCommand>
         {
             private readonly CompanyEmpContext _db;
             private readonly IMapper _mapper;
@@ -56,7 +56,8 @@ namespace VerticalArchApp.API.Featurers.Employees
                 _db = db ?? throw new ArgumentNullException(nameof(db));
                 _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             }
-            public async Task<IEnumerable<UpdateResult>> Handle(UpdateCommand request, CancellationToken cancellationToken)
+
+            async Task<Unit> IRequestHandler<UpdateCommand, Unit>.Handle(UpdateCommand request, CancellationToken cancellationToken)
             {
                 // get the company with company id from reqeust
                 var company = await _db.Companies.FindAsync(request.CompanyId);
@@ -73,10 +74,9 @@ namespace VerticalArchApp.API.Featurers.Employees
                 employee.Name = request.Name;
                 employee.Position = request.Position;
                 employee.Age = request.Age;
+                _db.Employees.Update(employee);
                 await _db.SaveChangesAsync();
-                var resultByCompany = _db.Employees.Where(e => e.CompanyId == request.CompanyId).ToList();
-                var results = _mapper.Map<IEnumerable<UpdateResult>>(resultByCompany);
-                return results;
+                return Unit.Value;
             }
         }
     }

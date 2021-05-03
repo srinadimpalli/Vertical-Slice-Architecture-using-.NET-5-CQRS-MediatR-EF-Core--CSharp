@@ -13,7 +13,7 @@ namespace VerticalArchApp.API.Featurers.Employees
 {
     public class CreateEmployeeForCompany
     {
-        public class Command : IRequest<IEnumerable<EmpResult>>
+        public class Command : IRequest<EmpResult>
         {
             public string Name { get; set; }
             public int Age { get; set; }
@@ -23,10 +23,10 @@ namespace VerticalArchApp.API.Featurers.Employees
         public class EmpResult
         {
             public int Id { get; set; }
-            public string Name { get; set; }
-            public int Age { get; set; }
-            public string Position { get; set; }
-            public int CompanyId { get; set; }
+            //public string Name { get; set; }
+            //public int Age { get; set; }
+            //public string Position { get; set; }
+            //public int CompanyId { get; set; }
         }
         public class MapperProfile : Profile
         {
@@ -44,7 +44,7 @@ namespace VerticalArchApp.API.Featurers.Employees
                 RuleFor(x => x.Position).NotNull().MaximumLength(20).WithMessage("Maximum length for the position is 20 characters.");
             }
         }
-        public class Handler : IRequestHandler<Command, IEnumerable<EmpResult>>
+        public class Handler : IRequestHandler<Command, EmpResult>
         {
             private readonly CompanyEmpContext _db;
             private readonly IMapper _mapper;
@@ -53,7 +53,7 @@ namespace VerticalArchApp.API.Featurers.Employees
                 _db = db ?? throw new ArgumentNullException(nameof(db));
                 _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             }
-            public async Task<IEnumerable<EmpResult>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<EmpResult> Handle(Command request, CancellationToken cancellationToken)
             {
                 var company = await _db.Companies.FindAsync(request.CompanyId);
 
@@ -70,9 +70,10 @@ namespace VerticalArchApp.API.Featurers.Employees
                 };
                 _db.Employees.Add(employee);
                 await _db.SaveChangesAsync();
-                var resultByCompany = _db.Employees.Where(e => e.CompanyId == request.CompanyId).ToList();
-                var results = _mapper.Map<IEnumerable<EmpResult>>(resultByCompany);
-                return results;
+                //return Unit.Value;
+                //var resultByCompany = _db.Employees.Where(e => e.CompanyId == request.CompanyId).ToList();
+                var result = _mapper.Map<EmpResult>(employee);
+                return result;
             }
         }
     }
