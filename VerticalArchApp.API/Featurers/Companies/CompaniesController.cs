@@ -20,7 +20,7 @@ namespace VerticalArchApp.API.Featurers.Companies
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ListAllCompanies.Result>>> GetAsync()
         {
-            var result = await _mediator.Send(new ListAllCompanies.Command());
+            var result = await _mediator.Send(new ListAllCompanies.Query());
             return Ok(result);
         }
     }

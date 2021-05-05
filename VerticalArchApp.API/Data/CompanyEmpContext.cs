@@ -9,7 +9,7 @@ namespace VerticalArchApp.API.Data
 {
     public class CompanyEmpContext : DbContext
     {
-        public CompanyEmpContext(DbContextOptions options) : base(options) { }
+        public CompanyEmpContext(DbContextOptions<CompanyEmpContext> options) : base(options) { }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Employee> Employees { get; set; }
     }

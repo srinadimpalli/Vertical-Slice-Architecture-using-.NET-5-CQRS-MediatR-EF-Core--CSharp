@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using VerticalArchApp.API.Data;
+using VerticalArchApp.API.Services;
 
 namespace VerticalArchApp.API.Featurers.Employees
 {
@@ -29,26 +30,29 @@ namespace VerticalArchApp.API.Featurers.Employees
 
         public class Handler : IRequestHandler<DelCommand, Unit>
         {
-            private readonly CompanyEmpContext _db;
+            private readonly IServiceManager _serviceManager;
             private readonly IMapper _mapper;
-            public Handler(CompanyEmpContext db, IMapper mapper)
+            public Handler(IServiceManager serviceManager, IMapper mapper)
             {
-                _db = db ?? throw new ArgumentNullException(nameof(db));
+                _serviceManager = serviceManager ?? throw new ArgumentNullException(nameof(serviceManager));
                 _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             }
 
             public async Task<Unit> Handle(DelCommand request, CancellationToken cancellationToken)
             {
-                var employee = await _db.Employees.FindAsync(request.EmployeeId);
-                if (employee != null)
+                var company = await _serviceManager.Company.GetCompanyAsync(request.CompanyId, trackChanges: false);
+                if (company == null)
                 {
-                    _db.Employees.Remove(employee);
-                    _db.SaveChanges();
+                    throw new NoCompanyExistsException(request.CompanyId);
                 }
-                else
+
+                var employee = await _serviceManager.Employee.GetEmployeeAsync(request.CompanyId, request.EmployeeId, trackChanges: true);
+                if (employee == null)
                 {
                     throw new NoEmployeeExistsException(request.CompanyId, request.EmployeeId);
                 }
+                _serviceManager.Employee.DeleteEmployee(employee);
+                await _serviceManager.SaveAsync();
 
                 return Unit.Value;
 

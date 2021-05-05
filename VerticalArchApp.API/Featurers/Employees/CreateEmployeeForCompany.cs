@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using VerticalArchApp.API.Data;
 using VerticalArchApp.API.Domain;
+using VerticalArchApp.API.Services;
 
 namespace VerticalArchApp.API.Featurers.Employees
 {
@@ -23,16 +24,18 @@ namespace VerticalArchApp.API.Featurers.Employees
         public class EmpResult
         {
             public int Id { get; set; }
-            //public string Name { get; set; }
-            //public int Age { get; set; }
-            //public string Position { get; set; }
-            //public int CompanyId { get; set; }
+            public string Name { get; set; }
+            public int Age { get; set; }
+            public string Position { get; set; }
+            public int CompanyId { get; set; }
         }
         public class MapperProfile : Profile
         {
             public MapperProfile()
             {
+
                 CreateMap<Employee, EmpResult>();
+                // CreateMap<Command, Employee>();
             }
         }
         public class Validator : AbstractValidator<Command>
@@ -46,33 +49,36 @@ namespace VerticalArchApp.API.Featurers.Employees
         }
         public class Handler : IRequestHandler<Command, EmpResult>
         {
-            private readonly CompanyEmpContext _db;
+            private readonly IServiceManager _serviceManager;
             private readonly IMapper _mapper;
-            public Handler(CompanyEmpContext db, IMapper mapper)
+            public Handler(IServiceManager serviceManager, IMapper mapper)
             {
-                _db = db ?? throw new ArgumentNullException(nameof(db));
+                _serviceManager = serviceManager ?? throw new ArgumentNullException(nameof(serviceManager));
                 _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             }
             public async Task<EmpResult> Handle(Command request, CancellationToken cancellationToken)
             {
-                var company = await _db.Companies.FindAsync(request.CompanyId);
+                var company = await _serviceManager.Company.GetCompanyAsync(request.CompanyId, trackChanges: false);
 
                 if (company == null)
                 {
                     throw new NoCompanyExistsException(request.CompanyId);
                 }
-                var employee = new Employee()
+
+                // var empEntity = _mapper.Map<Employee>(request);
+                var empEntity = new Employee()
                 {
                     Name = request.Name,
                     Age = request.Age,
                     CompanyId = request.CompanyId,
                     Position = request.Position
                 };
-                _db.Employees.Add(employee);
-                await _db.SaveChangesAsync();
+                _serviceManager.Employee.CreateEmployeeForCompany(request.CompanyId, empEntity);
+                await _serviceManager.SaveAsync();
+
                 //return Unit.Value;
                 //var resultByCompany = _db.Employees.Where(e => e.CompanyId == request.CompanyId).ToList();
-                var result = _mapper.Map<EmpResult>(employee);
+                var result = _mapper.Map<EmpResult>(empEntity);
                 return result;
             }
         }

@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using VerticalArchApp.API.Data;
 using VerticalArchApp.API.Domain;
+using VerticalArchApp.API.Services;
 
 namespace VerticalArchApp.API.Featurers.Employees
 {
@@ -44,24 +45,26 @@ namespace VerticalArchApp.API.Featurers.Employees
 
         public class Handler : IRequestHandler<Query, IEnumerable<EmpResult>>
         {
-            private readonly CompanyEmpContext _db;
+            private readonly IServiceManager _serviceManager;
             private readonly IMapper _mapper;
 
-            public Handler(CompanyEmpContext db, IMapper mapper)
+            public Handler(IServiceManager serviceManager, IMapper mapper)
             {
-                _db = db;
+                _serviceManager = serviceManager;
                 _mapper = mapper;
             }
 
             public async Task<IEnumerable<EmpResult>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var company = await _db.Companies.FindAsync(request.CompanyId);
+                var company = await _serviceManager.Company.GetCompanyAsync(request.CompanyId, trackChanges: false);
                 if (company == null)
                 {
                     throw new NoCompanyExistsException(request.CompanyId);
                 }
-                var results = _mapper.ProjectTo<EmpResult>(_db.Employees.Where(x => x.CompanyId == request.CompanyId));
-                return results.AsEnumerable();
+                var employees = await _serviceManager.Employee.GetEmployeesAsync(request.CompanyId, trackChanges: false);
+
+                var results = _mapper.Map<IEnumerable<EmpResult>>(employees); //(_db.Employees.Where(x => x.CompanyId == request.CompanyId));
+                return results;
             }
         }
     }

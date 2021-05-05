@@ -19,15 +19,25 @@ namespace VerticalArchApp.API.Featurers.Employees
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        [HttpGet()]
+        [HttpGet("{companyid}", Name = "GetEmployeesForCompany")]
         public async Task<ActionResult<IEnumerable<EmpResult>>> GetEmployeesForCompany(int companyid)
         {
-            var query = new Query
+            try
             {
-                CompanyId = companyid
-            };
-            var results = await _mediator.Send(query);
-            return Ok(results);
+                var query = new Query
+                {
+                    CompanyId = companyid
+                };
+                var results = await _mediator.Send(query);
+                return Ok(results);
+            }
+            catch (NoCompanyExistsException ex)
+            {
+                return Conflict(new
+                {
+                    ex.Message,
+                });
+            }
         }
 
         [HttpPost()]
@@ -36,8 +46,7 @@ namespace VerticalArchApp.API.Featurers.Employees
             try
             {
                 var result = await _mediator.Send(command);
-                //return Ok(result);
-                return CreatedAtRoute("EmployeeById", new { id = result.Id }, result);
+                return CreatedAtRoute("GetEmployeesForCompany", new { companyid = result.CompanyId }, result);
             }
             catch (NoCompanyExistsException ex)
             {
@@ -56,7 +65,6 @@ namespace VerticalArchApp.API.Featurers.Employees
                 command.CompanyId = companyid;
                 await _mediator.Send(command);
                 return NoContent();
-                //return Ok(result);
             }
             catch (NoCompanyExistsException ex)
             {

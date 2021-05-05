@@ -7,12 +7,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using VerticalArchApp.API.Data;
 using VerticalArchApp.API.Domain;
+using VerticalArchApp.API.Services;
 
 namespace VerticalArchApp.API.Featurers.Companies
 {
     public class ListAllCompanies
     {
-        public class Command : IRequest<IEnumerable<Result>> { }
+        public class Query : IRequest<IEnumerable<Result>> { }
         public class Result
         {
             public int Id { get; set; }
@@ -27,20 +28,21 @@ namespace VerticalArchApp.API.Featurers.Companies
                 CreateMap<Company, Result>();
             }
         }
-        public class Handler : IRequestHandler<Command, IEnumerable<Result>>
+        public class Handler : IRequestHandler<Query, IEnumerable<Result>>
         {
-            private readonly CompanyEmpContext _db;
+            private readonly IServiceManager _serviceManager;
             private readonly IMapper _mapper;
 
-            public Handler(CompanyEmpContext db, IMapper mapper)
+            public Handler(IServiceManager serviceManager, IMapper mapper)
             {
-                _db = db;
+                _serviceManager = serviceManager;
                 _mapper = mapper;
             }
-            public Task<IEnumerable<Result>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<Result>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var results = _mapper.ProjectTo<Result>(_db.Companies);
-                return Task.FromResult(results.AsEnumerable());
+                var companies = await _serviceManager.Company.GetAllCompaniesAsync(trackChanges: false);
+                var results = _mapper.Map<IEnumerable<Result>>(companies);
+                return results;
             }
         }
     }

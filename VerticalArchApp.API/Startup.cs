@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VerticalArchApp.API.Services;
 
 namespace VerticalArchApp.API
 {
@@ -31,9 +32,13 @@ namespace VerticalArchApp.API
         public void ConfigureServices(IServiceCollection services)
         {
             var currentAssembly = GetType().Assembly;
+
             services.AddAutoMapper(currentAssembly);
             services.AddMediatR(currentAssembly);
             services.AddDependencyInjectionModules(currentAssembly);
+            // service manager
+            services.AddScoped<IServiceManager, ServiceManager>();
+
             services.AddControllers(options => options.Filters.Add<FluentValidationExceptionFilter>())
                 .AddFluentValidation(config => config.RegisterValidatorsFromAssembly(currentAssembly));
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ThrowFluentValidationExceptionBehavior<,>));
