@@ -10,10 +10,11 @@ using VerticalArchApp.API.Data;
 using VerticalArchApp.API.Domain;
 using VerticalArchApp.API.Services;
 
-namespace VerticalArchApp.API.Featurers.Employees
+namespace VerticalArchApp.API.Features.Employees
 {
     public class CreateEmployeeForCompany
     {
+        //Input
         public class Command : IRequest<EmpResult>
         {
             public string Name { get; set; }
@@ -21,6 +22,7 @@ namespace VerticalArchApp.API.Featurers.Employees
             public string Position { get; set; }
             public int CompanyId { get; set; }
         }
+        //Output
         public class EmpResult
         {
             public int Id { get; set; }
@@ -29,15 +31,7 @@ namespace VerticalArchApp.API.Featurers.Employees
             public string Position { get; set; }
             public int CompanyId { get; set; }
         }
-        public class MapperProfile : Profile
-        {
-            public MapperProfile()
-            {
-
-                CreateMap<Employee, EmpResult>();
-                // CreateMap<Command, Employee>();
-            }
-        }
+        //Validator
         public class Validator : AbstractValidator<Command>
         {
             public Validator()
@@ -47,6 +41,7 @@ namespace VerticalArchApp.API.Featurers.Employees
                 RuleFor(x => x.Position).NotNull().MaximumLength(20).WithMessage("Maximum length for the position is 20 characters.");
             }
         }
+        //Handler
         public class Handler : IRequestHandler<Command, EmpResult>
         {
             private readonly IServiceManager _serviceManager;
@@ -64,8 +59,6 @@ namespace VerticalArchApp.API.Featurers.Employees
                 {
                     throw new NoCompanyExistsException(request.CompanyId);
                 }
-
-                // var empEntity = _mapper.Map<Employee>(request);
                 var empEntity = new Employee()
                 {
                     Name = request.Name,
@@ -75,9 +68,6 @@ namespace VerticalArchApp.API.Featurers.Employees
                 };
                 _serviceManager.Employee.CreateEmployeeForCompany(request.CompanyId, empEntity);
                 await _serviceManager.SaveAsync();
-
-                //return Unit.Value;
-                //var resultByCompany = _db.Employees.Where(e => e.CompanyId == request.CompanyId).ToList();
                 var result = _mapper.Map<EmpResult>(empEntity);
                 return result;
             }

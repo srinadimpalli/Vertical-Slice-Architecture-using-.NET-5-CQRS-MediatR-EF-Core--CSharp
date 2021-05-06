@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using VerticalArchApp.API.Data;
 using VerticalArchApp.API.Services;
 
-namespace VerticalArchApp.API.Featurers.Employees
+namespace VerticalArchApp.API.Features.Employees
 {
     public class DeleteEmployeeForCompany
     {

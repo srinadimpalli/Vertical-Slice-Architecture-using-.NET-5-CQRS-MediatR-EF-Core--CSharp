@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VerticalArchApp.API.Data;
 using VerticalArchApp.API.Domain;
-using VerticalArchApp.API.Featurers.Employees;
+using VerticalArchApp.API.Features.Employees;
 using Xunit;
 
 namespace VerticalArchApp.Test.Features

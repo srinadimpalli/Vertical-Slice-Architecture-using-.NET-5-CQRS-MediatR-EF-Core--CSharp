@@ -21,7 +21,7 @@ namespace VerticalArchApp.API.Services
     #endregion
 
     #region Implementation
-    public class ServiceBase<T> : IServiceBase<T> where T : class
+    public abstract class ServiceBase<T> : IServiceBase<T> where T : class
     {
         private readonly CompanyEmpContext _db;
         public ServiceBase(CompanyEmpContext db)

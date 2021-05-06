@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static VerticalArchApp.API.Featurers.Employees.ListAllEmployeesForCompany;
+using static VerticalArchApp.API.Features.Employees.GetAllEmployeesForCompany;
 
-namespace VerticalArchApp.API.Featurers.Employees
+namespace VerticalArchApp.API.Features.Employees
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,6 +19,7 @@ namespace VerticalArchApp.API.Featurers.Employees
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
+        #region Queries
         [HttpGet("{companyid}", Name = "GetEmployeesForCompany")]
         public async Task<ActionResult<IEnumerable<EmpResult>>> GetEmployeesForCompany(int companyid)
         {
@@ -39,7 +40,9 @@ namespace VerticalArchApp.API.Featurers.Employees
                 });
             }
         }
+        #endregion
 
+        #region Commands
         [HttpPost()]
         public async Task<ActionResult> CreateEmployee([FromBody] CreateEmployeeForCompany.Command command)
         {
@@ -109,5 +112,6 @@ namespace VerticalArchApp.API.Featurers.Employees
                 });
             }
         }
+        #endregion
     }
 }

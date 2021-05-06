@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VerticalArchApp.API.Data;
 using VerticalArchApp.API.Domain;
-using VerticalArchApp.API.Featurers.Companies;
+using VerticalArchApp.API.Features.Companies;
 using Xunit;
 
 namespace VerticalArchApp.Test.Features
@@ -44,7 +44,7 @@ namespace VerticalArchApp.Test.Features
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
                 //Act
-                var result = await mediator.Send(new ListAllCompanies.Command());
+                var result = await mediator.Send(new GetAllCompanies.Query());
 
                 //Assert
                 using var assertScope = serviceProvider.CreateScope();

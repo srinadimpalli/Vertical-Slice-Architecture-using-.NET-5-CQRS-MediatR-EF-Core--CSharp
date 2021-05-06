@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace VerticalArchApp.API.Featurers.Employees
+namespace VerticalArchApp.API.Features.Employees
 {
     public class NoEmployeeExistsException : Exception
     {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VerticalArchApp.API.Data;
-using VerticalArchApp.API.Featurers.Companies;
-using VerticalArchApp.API.Featurers.Employees;
+using VerticalArchApp.API.Features.Companies;
+using VerticalArchApp.API.Features.Employees;
 
 namespace VerticalArchApp.API.Services
 {

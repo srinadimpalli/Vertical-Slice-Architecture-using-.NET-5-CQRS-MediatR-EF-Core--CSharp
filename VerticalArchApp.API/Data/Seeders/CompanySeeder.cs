@@ -1,8 +1,4 @@
 ﻿using ForEvolve.EntityFrameworkCore.Seeders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using VerticalArchApp.API.Domain;
 
 namespace VerticalArchApp.API.Data.Seeders

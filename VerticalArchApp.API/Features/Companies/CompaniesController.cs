@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace VerticalArchApp.API.Featurers.Companies
+namespace VerticalArchApp.API.Features.Companies
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -18,9 +18,11 @@ namespace VerticalArchApp.API.Featurers.Companies
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ListAllCompanies.Result>>> GetAsync()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetAllCompanies.Result))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<GetAllCompanies.Result>>> GetAsync()
         {
-            var result = await _mediator.Send(new ListAllCompanies.Query());
+            var result = await _mediator.Send(new GetAllCompanies.Query());
             return Ok(result);
         }
     }

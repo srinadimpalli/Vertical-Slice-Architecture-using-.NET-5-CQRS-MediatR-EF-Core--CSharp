@@ -7,7 +7,7 @@ using VerticalArchApp.API.Data;
 using VerticalArchApp.API.Domain;
 using VerticalArchApp.API.Services;
 
-namespace VerticalArchApp.API.Featurers.Employees
+namespace VerticalArchApp.API.Features.Employees
 {
     #region Interface
 

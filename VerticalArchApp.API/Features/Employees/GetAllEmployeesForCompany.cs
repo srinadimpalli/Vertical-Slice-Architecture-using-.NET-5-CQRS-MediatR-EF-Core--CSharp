@@ -10,9 +10,9 @@ using VerticalArchApp.API.Data;
 using VerticalArchApp.API.Domain;
 using VerticalArchApp.API.Services;
 
-namespace VerticalArchApp.API.Featurers.Employees
+namespace VerticalArchApp.API.Features.Employees
 {
-    public class ListAllEmployeesForCompany
+    public class GetAllEmployeesForCompany
     {
         // Input
         public class Query : IRequest<IEnumerable<EmpResult>>
@@ -27,14 +27,7 @@ namespace VerticalArchApp.API.Featurers.Employees
             public int Age { get; set; }
             public string Position { get; set; }
         }
-
-        public class MapperProfile : Profile
-        {
-            public MapperProfile()
-            {
-                CreateMap<Employee, EmpResult>();
-            }
-        }
+        // Validator
         public class Validater : AbstractValidator<Query>
         {
             public Validater()
@@ -42,7 +35,7 @@ namespace VerticalArchApp.API.Featurers.Employees
                 RuleFor(x => x.CompanyId).GreaterThan(0);
             }
         }
-
+        //Handler
         public class Handler : IRequestHandler<Query, IEnumerable<EmpResult>>
         {
             private readonly IServiceManager _serviceManager;

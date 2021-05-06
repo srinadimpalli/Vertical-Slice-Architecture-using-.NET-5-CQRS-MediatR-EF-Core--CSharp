@@ -9,9 +9,9 @@ using VerticalArchApp.API.Data;
 using VerticalArchApp.API.Domain;
 using VerticalArchApp.API.Services;
 
-namespace VerticalArchApp.API.Featurers.Companies
+namespace VerticalArchApp.API.Features.Companies
 {
-    public class ListAllCompanies
+    public class GetAllCompanies
     {
         public class Query : IRequest<IEnumerable<Result>> { }
         public class Result
@@ -21,13 +21,15 @@ namespace VerticalArchApp.API.Featurers.Companies
             public string Address { get; set; }
             public string Country { get; set; }
         }
-        public class MapperProfile : Profile
-        {
-            public MapperProfile()
-            {
-                CreateMap<Company, Result>();
-            }
-        }
+        //We have a MapperProfile class for each use case in this project, but we could share one
+        //per feature instead, moving the MapperProfile class to the same level as the controller
+        //public class MapperProfile : Profile
+        //{
+        //    public MapperProfile()
+        //    {
+        //        CreateMap<Company, Result>();
+        //    }
+        //}
         public class Handler : IRequestHandler<Query, IEnumerable<Result>>
         {
             private readonly IServiceManager _serviceManager;

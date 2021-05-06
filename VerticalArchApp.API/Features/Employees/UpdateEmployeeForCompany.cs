@@ -10,7 +10,7 @@ using VerticalArchApp.API.Data;
 using VerticalArchApp.API.Domain;
 using VerticalArchApp.API.Services;
 
-namespace VerticalArchApp.API.Featurers.Employees
+namespace VerticalArchApp.API.Features.Employees
 {
     public class UpdateEmployeeForCompany
     {
@@ -31,13 +31,6 @@ namespace VerticalArchApp.API.Featurers.Employees
             public int Age { get; set; }
             public string Position { get; set; }
             public int CompanyId { get; set; }
-        }
-        public class MapperProfile : Profile
-        {
-            public MapperProfile()
-            {
-                CreateMap<Employee, UpdateResult>();
-            }
         }
 
         public class Validator : AbstractValidator<UpdateCommand>
