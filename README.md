@@ -18,6 +18,6 @@ This is an ASP.NET Core Web API application, MediatR has been used to implement 
 * [ForEvolve](https://github.com/ForEvolve/ForEvolve.DependencyInjection)
 
 ### Usage
-<p align="center">
+<p align="left">
       <img src="https://www.srinadimpalli.com/wp-content/uploads/2021/05/swageroutput-644x480.png" alt="usage">
 </P
