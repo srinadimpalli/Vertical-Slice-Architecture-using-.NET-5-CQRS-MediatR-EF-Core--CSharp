@@ -6,7 +6,7 @@
 ## About The Project
 This is an ASP.NET Core Web API application, MediatR has been used to implement CQRS pattern by encapsulating logic and behavior in to Command/Query models and handlers.
     <br />
-    <a href="https://www.srinadimpalli.com/2021/05/vertical-slice-architecture-using-net5-cqrs-mediatr-ef-core-c/" target="_blank"><strong>Explore the docs »</strong></a>
+    <a target="_blank" href="https://www.srinadimpalli.com/2021/05/vertical-slice-architecture-using-net5-cqrs-mediatr-ef-core-c/"><strong>Explore the docs »</strong></a>
     
 ### Built With
 * Visual Studio 2019
