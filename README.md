@@ -27,8 +27,9 @@ This is an ASP.NET Core Web API application, MediatR has been used to implement 
       <img src="https://www.srinadimpalli.com/wp-content/uploads/2021/05/RequestFlowvalidation-644x268.png" alt="requestres">
 </P
 
-### Contact
+## Author
 
 [Raju Nadimpalli](https://srinadimpalli.com) - raju@srinadimpalli.com
 
+## Example Application
 Project Link: [Live sample implemented using CQRS MediatR ASP.NET Core 3.1](http://srinadimpalli-001-site3.dtempurl.com)
