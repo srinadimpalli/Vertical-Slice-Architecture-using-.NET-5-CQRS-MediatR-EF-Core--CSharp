@@ -29,6 +29,6 @@ This is an ASP.NET Core Web API application, MediatR has been used to implement 
 
 ### Contact
 
-Your Name - [Raju Nadimpalli](https://srinadimpalli.com) - raju@srinadimpalli.com
+[Raju Nadimpalli](https://srinadimpalli.com) - raju@srinadimpalli.com
 
 Project Link: [Live sample implemented using CQRS MediatR ASP.NET Core 3.1](http://srinadimpalli-001-site3.dtempurl.com)
