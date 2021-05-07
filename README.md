@@ -21,3 +21,9 @@ This is an ASP.NET Core Web API application, MediatR has been used to implement 
 <p align="left">
       <img src="https://www.srinadimpalli.com/wp-content/uploads/2021/05/swageroutput-644x480.png" alt="usage">
 </P
+
+* Complete Request/Response cycle with Validation.
+<p align="left">
+      <img src="https://www.srinadimpalli.com/wp-content/uploads/2021/05/RequestFlowvalidation-644x268.png" alt="requestres">
+</P
+
