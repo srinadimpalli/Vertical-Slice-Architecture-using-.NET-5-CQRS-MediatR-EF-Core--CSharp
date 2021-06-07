@@ -21,15 +21,7 @@ namespace VerticalArchApp.API.Features.Companies
             public string Address { get; set; }
             public string Country { get; set; }
         }
-        //We have a MapperProfile class for each use case in this project, but we could share one
-        //per feature instead, moving the MapperProfile class to the same level as the controller
-        //public class MapperProfile : Profile
-        //{
-        //    public MapperProfile()
-        //    {
-        //        CreateMap<Company, Result>();
-        //    }
-        //}
+
         public class Handler : IRequestHandler<Query, IEnumerable<Result>>
         {
             private readonly IServiceManager _serviceManager;
